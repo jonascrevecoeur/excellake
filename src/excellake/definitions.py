@@ -6,7 +6,6 @@ from excellake.client.excellake import Excellake
 import excellake.assets
 
 from excellake.jobs.daily_job import daily_job
-from excellake.jobs.monthly_job import monthly_job
 
 load_dotenv()
 
@@ -17,5 +16,5 @@ all_assets_job = define_asset_job(name="all_assets_job")
 defs = Definitions(
     assets=load_assets_from_package_module(excellake.assets),
     resources={"excellake": Excellake(home_directory=os.environ.get("HOME_DIRECTORY"))},
-    jobs=[all_assets_job, daily_job, monthly_job],
+    jobs=[all_assets_job, daily_job],
 )

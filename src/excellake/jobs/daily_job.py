@@ -3,6 +3,7 @@ from dagster import (
     load_assets_from_package_module,
     define_asset_job,
     DailyPartitionsDefinition,
+    job,
 )
 
 import excellake.assets
@@ -27,4 +28,5 @@ def daily_or_unpartitioned_selection(all_assets):
 daily_job = define_asset_job(
     name="daily_job",
     selection=daily_or_unpartitioned_selection(all_assets),
+    partitions_def=DailyPartitionsDefinition(start_date="2026-01-01"),
 )

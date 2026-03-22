@@ -23,6 +23,6 @@ jobs:
 
       - name: Run dagster
         run: |
-          uv run dg launch --job daily_job --partition $(date '+%Y-%m-%d')
+          uv run dg launch --job daily_job --partition $(date --date="yesterday" '+%Y-%m-%d')
         env:
-          DAGSTER_HOME: "${{ GITHUB_WORKSPACE }}"
+          DAGSTER_HOME: "${{ github.workspace }}"

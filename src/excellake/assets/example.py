@@ -47,10 +47,10 @@ def example__fake_users_enhanced(example__fake_users: pl.DataFrame):
     )
 
 
-monthly_partition = dg.MonthlyPartitionsDefinition(start_date="2026-01-01")
+daily_partition = dg.DailyPartitionsDefinition(start_date="2026-01-01")
 
 
-@dg.asset(io_manager_key="excellake", partitions_def=monthly_partition)
+@dg.asset(io_manager_key="excellake", partitions_def=daily_partition)
 def example__partitioned(context: dg.AssetExecutionContext):
     date = context.partition_key
     return pl.DataFrame(
