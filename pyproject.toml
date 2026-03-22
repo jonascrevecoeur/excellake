@@ -21,12 +21,9 @@ dev = [
     "dagster-dg-cli",
 ]
 
-[tool.setuptools]
-package-dir = {"" = "src"}
+[tool.uv]
+package = true
 
-
-[tool.setuptools.packages.find]
-where = ["src"]
 
 [tool.dg]
 directory_type = "project"

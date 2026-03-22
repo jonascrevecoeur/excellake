@@ -432,7 +432,7 @@ wheels = [
 [[package]]
 name = "excellake"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "dagster" },
     { name = "fastexcel" },
