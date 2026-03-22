@@ -11,6 +11,7 @@ from googleapiclient.http import MediaInMemoryUpload, HttpError
 from google.oauth2 import service_account
 import polars as pl
 import pandas as pd
+from dagster import OutputContext
 
 
 class Excellake(IOManager):
@@ -24,7 +25,7 @@ class Excellake(IOManager):
 
         return f"{self.home_directory}/{path}.xlsx"
 
-    def handle_output(self, context, obj):
+    def handle_output(self, context: OutputContext, obj):
         filename = self._get_path(context)
 
         if not isinstance(obj, pl.DataFrame) and not isinstance(obj, pd.DataFrame):
@@ -38,7 +39,7 @@ class Excellake(IOManager):
         # Create the folder if it does not exist
         Path(filename).parent.mkdir(parents=True, exist_ok=True)
 
-        if context.has_partition_key:
+        if context.has_asset_partitions:
             with pd.ExcelWriter(
                 filename,
                 engine="openpyxl",
