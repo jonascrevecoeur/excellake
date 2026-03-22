@@ -3,6 +3,7 @@ name: Daily run
 on:
   schedule:
     - cron: "0 6 * * 1-5"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,6 +23,6 @@ jobs:
 
       - name: Run dagster
         run: |
-          uv run dg launch --job daily_job
+          uv run dg launch --job daily_job --partition $(date '+%Y-%m-%d')
         env:
           DAGSTER_HOME: "${{ GITHUB_WORKSPACE }}"
