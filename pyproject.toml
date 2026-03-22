@@ -1,0 +1,38 @@
+[project]
+name = "excellake"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "dagster>=1.12.7",
+    "fastexcel>=0.19.0",
+    "google-api-python-client>=2.187.0",
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.3",
+    "polars>=1.36.1",
+    "pyarrow>=23.0.1",
+    "xlsxwriter>=3.2.9",
+]
+
+[dependency-groups]
+dev = [
+    "dagster-webserver",
+    "dagster-dg-cli",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.dg]
+directory_type = "project"
+
+[tool.dg.project]
+root_module = "excellake"
+registry_modules = [
+    "excellake.definitions",
+]
