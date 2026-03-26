@@ -37,7 +37,7 @@ class Excellake(IOManager):
             obj = obj.to_pandas()
 
         # Create the folder if it does not exist
-        Path(filename).parent.mkdir(parents=True, exist_ok=True)
+        Path(filename).expanduser().parent.mkdir(parents=True, exist_ok=True)
 
         if context.has_asset_partitions:
             with pd.ExcelWriter(
