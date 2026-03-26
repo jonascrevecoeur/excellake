@@ -25,4 +25,6 @@ jobs:
         run: |
           uv run dg launch --job daily_job --partition $(date --date="yesterday" '+%Y-%m-%d')
         env:
-          DAGSTER_HOME: "${{ github.workspace }}"
+          DAGSTER_HOME: ${{ vars.dagster_home }}
+          ENVIRONMENT: prd
+          DATA_DIRECTORY_PRD: ~/OneDrive/data
