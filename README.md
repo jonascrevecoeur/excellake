@@ -8,13 +8,15 @@ More information on the architecture choices leading to Excellake can be found i
 
 ## Getting started
 
-### Configuration developer laptop
+### Configuration developer computer
 
 **Prerequisites:**
 
 - Mounted storage location
 - Git
 - Python
+
+If you use a windows computer, you will need to install windows subsystem for linux (wsl) to use Excellake.
 
 **Installation:**
 
@@ -58,8 +60,8 @@ This section configures the computer that will run the production data pipelines
 **GitHub runner setup**
 
 - Create a private fork of `jonascrevecoeur/excellake`
-- Configure a GitHub self-hosted runner on the computre running production pipelines following [this guide](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners#adding-a-self-hosted-runner-to-a-repository)
-- Define the following environment variables on the Git repo
+- Configure a GitHub self-hosted runner on the computre running production pipelines following [this guide](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners#adding-a-self-hosted-runner-to-a-repository). On windows computers, install Windows Subsystem for Linux and configure a self-hosted runner for Linux.
+- Define the following variables on the Git repo
   - ENVIRONMENT: prd
   - DATA_DIRECTORY_PRD: (location to store data)
   - DAGSTER_HOME: (location to store run metadata)
