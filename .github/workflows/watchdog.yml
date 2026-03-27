@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wait 15 minutes
-        run: sleep 900
+        run: sleep 10
 
       - name: Check run status
         id: check
