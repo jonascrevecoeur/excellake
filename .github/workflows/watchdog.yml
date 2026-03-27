@@ -31,10 +31,12 @@ jobs:
 
             core.info(`Run status: ${status}`);
             core.setOutput("result", status);
+            core.setOutput('MY_OUTPUT', 'hello world')
 
       - name: Print status
         run: |
-          echo ${{ steps.check.outputs.result }}
+          echo "Output: ${{ steps.check.outputs.MY_OUTPUT }}"
+          echo ${{ steps.check.outputs.test }}
 
       - name: Cancel if still queued
         if: ${{ steps.check.outputs.result == 'queued' }}
