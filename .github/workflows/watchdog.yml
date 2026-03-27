@@ -39,7 +39,7 @@ jobs:
           echo ${{ steps.check.outputs.RESULT }}
 
       - name: Cancel if still queued
-        if: ${{ steps.check.outputs.RESULT == 'queued' }}
+        if: ${{ steps.check.outputs.MY_OUTPUT == 'queued' }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -54,7 +54,7 @@ jobs:
             });
 
       - name: Mark as failed (status check)
-        if: steps.check.outputs.RESULT == 'queued'
+        if: steps.check.outputs.MY_OUTPUT == 'queued'
         uses: actions/github-script@v7
         with:
           script: |
@@ -68,7 +68,7 @@ jobs:
             });
 
       - name: Fail watchdog
-        if: steps.check.outputs.RESULT == 'queued'
+        if: steps.check.outputs.MY_OUTPUT == 'queued'
         run: |
           echo "Run was queued too long"
           exit 1
