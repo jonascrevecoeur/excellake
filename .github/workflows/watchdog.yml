@@ -28,8 +28,7 @@ jobs:
             });
 
             core.info(`Run status: ${run.status}`);
-
-            return run.status;
+            core.setOutput("result", run.status);
 
       - name: Cancel if still queued
         if: steps.check.outputs.result == 'queued'
