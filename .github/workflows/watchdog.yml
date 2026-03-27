@@ -30,16 +30,16 @@ jobs:
             const status = run.status.trim();
 
             core.info(`Run status: ${status}`);
-            core.setOutput("result", "${status}");
+            core.setOutput('RESULT', status);
             core.setOutput('MY_OUTPUT', status)
 
       - name: Print status
         run: |
           echo "Output: ${{ steps.check.outputs.MY_OUTPUT }}"
-          echo ${{ steps.check.outputs.test }}
+          echo ${{ steps.check.outputs.RESULT }}
 
       - name: Cancel if still queued
-        if: ${{ steps.check.outputs.result == 'queued' }}
+        if: ${{ steps.check.outputs.RESULT == 'queued' }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -54,7 +54,7 @@ jobs:
             });
 
       - name: Mark as failed (status check)
-        if: steps.check.outputs.result == 'queued'
+        if: steps.check.outputs.RESULT == 'queued'
         uses: actions/github-script@v7
         with:
           script: |
@@ -68,7 +68,7 @@ jobs:
             });
 
       - name: Fail watchdog
-        if: steps.check.outputs.result == 'queued'
+        if: steps.check.outputs.RESULT == 'queued'
         run: |
           echo "Run was queued too long"
           exit 1
