@@ -30,8 +30,8 @@ jobs:
             const status = run.status.trim();
 
             core.info(`Run status: ${status}`);
-            core.setOutput("result", status);
-            core.setOutput('MY_OUTPUT', 'hello world')
+            core.setOutput("result", "${status}");
+            core.setOutput('MY_OUTPUT', status)
 
       - name: Print status
         run: |
