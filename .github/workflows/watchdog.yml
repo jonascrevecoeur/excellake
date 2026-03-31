@@ -1,3 +1,5 @@
+# Fail (and send an alert) if runs are stuck for
+# more than 10 minutes in queued
 name: Detect stuck worfklows
 
 on:

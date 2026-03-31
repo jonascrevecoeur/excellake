@@ -6,27 +6,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: write
   contents: read
 
 jobs:
-  watchdog:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Start watchdog checking job starts
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: "watchdog.yml",
-              ref: context.ref,
-              inputs: {
-                run_id: context.runId.toString()
-              }
-            })
-
   dagster-run:
     runs-on: self-hosted
 
