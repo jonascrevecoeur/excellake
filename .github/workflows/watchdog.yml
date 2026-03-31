@@ -1,11 +1,9 @@
-name: Watchdog
+name: Detect stuck worfklows
 
 on:
+  schedule:
+    - cron: "*/10 * * * *"
   workflow_dispatch:
-    inputs:
-      run_id:
-        required: true
-        type: string
 
 permissions:
   actions: write
@@ -14,44 +12,46 @@ jobs:
   monitor:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait 15 minutes
-        run: sleep 900
-
-      - name: Check run status
+      - name: Check queued runs
         id: check
         uses: actions/github-script@v7
         with:
           script: |
-            const runId = context.payload.inputs.run_id;
+            const now = new Date();
 
-            const { data: run } = await github.rest.actions.getWorkflowRun({
+            const { data } = await github.rest.actions.listWorkflowRunsForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              run_id: runId
+              status: "queued",
+              per_page: 100
             });
 
-            const status = run.status.trim();
+            let cancelledRuns = [];
 
-            core.info(`Run status: ${status}`);
-            core.setOutput('status', status)
+            for (const run of data.workflow_runs) {
+              const createdAt = new Date(run.created_at);
+              const diffMinutes = (now - createdAt) / 1000 / 60;
 
-      - name: Cancel if still queued
-        if: ${{ steps.check.outputs.status == 'queued' }}
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const runId = context.payload.inputs.run_id;
+              core.info(`Run ${run.id} queued for ${diffMinutes.toFixed(1)} minutes`);
 
-            core.info(`Cancelling run ${runId} queue timeout`);
+              if (diffMinutes > 10) {
+                core.info(`Cancelling run ${run.id}`);
 
-            await github.rest.actions.cancelWorkflowRun({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: runId
-            });
+                await github.rest.actions.cancelWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id
+                });
 
-      - name: Fail watchdog
-        if: steps.check.outputs.status == 'queued'
+                cancelledRuns.push(run.id);
+              }
+            }
+
+            core.setOutput("cancelled", cancelledRuns.length > 0 ? "true" : "false");
+            core.setOutput("count", cancelledRuns.length);
+
+      - name: Fail if runs were cancelled
+        if: steps.check.outputs.cancelled == 'true'
         run: |
-          echo "Run was queued too long"
+          echo "${{ steps.check.outputs.count }} run(s) were stuck in queue too long and got cancelled"
           exit 1
